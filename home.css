@@ -3,7 +3,7 @@ html {
   background-image: url(asset/konser.jpg);
   background-size: 100%;
   background-repeat: no-repeat;
-  background-color:black;
+  background-color: black;
 }
 
 header {
@@ -54,11 +54,13 @@ header img {
 body {
   margin: 0;
   margin-top: 10%;
-  h1 {
-    margin-left: 32.5%;
-    word-spacing: 10px;
-    letter-spacing: 1px;
-    color: black;
+  .judul {
+    h1 {
+      text-align: center;
+      word-spacing: 10px;
+      letter-spacing: 1px;
+      color: black;
+    }
   }
 }
 
@@ -88,9 +90,12 @@ body {
   object-fit: cover;
 }
 .card-content h1 {
-  font-size: 25px;
+  font-size: 20px;
   margin-bottom: 10px;
+  text-align: center;
+  color: black;
 }
+
 .card-content p {
   margin: 5%;
   font-size: 15px;
