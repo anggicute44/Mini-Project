@@ -1,0 +1,104 @@
+ create database objek12;
+ use objek12;
+
+
+MariaDB [objek12]> CREATE TABLE desti2 (
+    ->     iddesti INT AUTO_INCREMENT PRIMARY KEY,
+    ->     namadesti VARCHAR(30),
+    ->     jenisdesti TEXT NOT NULL,
+    ->     vistor INT
+    -> );
+
+
+MariaDB [objek12]> CREATE TABLE rivi1 (
+    ->     idrivi INT AUTO_INCREMENT PRIMARY KEY,
+    ->     iddesti INT NOT NULL,
+    ->     timestamprivi DATE NOT NULL,
+    ->     kontenrivi TEXT NOT NULL,
+    ->     userrivi VARCHAR(30) NOT NULL,
+    ->     FOREIGN KEY (iddesti) REFERENCES desti2(iddesti));
+
+
+
+
+
+-----------------
+3. Drop table
+
+CREATE TABLE rivi1 (
+    idrivi INT AUTO_INCREMENT PRIMARY KEY,
+    idDesti INT NOT NULL,
+    timestampRivi DATETIME DEFAULT NOW(),
+    kontenRivi TEXT NOT NULL,
+    userRivi VARCHAR(30) NOT NULL
+);
+
+4.ALTER TABLE desti2 AUTO_INCREMENT = 100;
+lihat hasil:  SHOW CREATE TABLE desti2;
+
+5.ALTER TABLE desti2 CHANGE vistor pengunjung INT;
+
+6.ALTER TABLE rivi1
+CHANGE timestampRivi timestampRivi DATETIME;
+
+7.ALTER TABLE rivi1
+MODIFY timestampRivi DATETIME DEFAULT NOW();
+
+8.CREATE INDEX idx_jenisDesti ON desti2 (jenisdesti);
+
+ show index from desti2;
+
+
+9.CREATE TABLE pic (
+    idPIC CHAR(4) NOT NULL PRIMARY KEY,
+    namaPIC VARCHAR(50),
+    noKontak VARCHAR(20)
+);
+
+10. ALTER TABLE pic
+ADD COLUMN gender ENUM('M', 'F') DEFAULT NULL;
+
+11.ALTER TABLE pic
+ADD COLUMN usia VARCHAR(10);
+
+
+12.ALTER TABLE pic
+ADD COLUMN tanggal_lahir DATE;
+
+13.menambah kolum id table lain kaya idpic pada table desti2
+
+ALTER TABLE desti2
+ADD COLUMN idPIC CHAR(4);
+
+ALTER TABLE desti2
+ADD CONSTRAINT fk_pic
+FOREIGN KEY (idPIC) REFERENCES pic(idPIC);
+
+14.USE objekwisata;
+DROP DATABASE objekwisata;
+SHOW DATABASES;
+
+
+-----
+menghapus data di colum
+DELETE FROM nama_tabel
+WHERE kolom1 = nilai1
+  AND kolom2 = nilai2
+  AND kolom3 = nilai3;
+
+menhapus kolum 
+ALTER TABLE nama_tabel
+DROP COLUMN nama_kolom;
+
+
+ganti atribut
+-ALTER TABLE HeroEs
+CHANGE COLUMN HP Weapon ENUM('SwOrd', 'MaGic') NOT NULL;
+
+-ALTER TABLE HeroEs
+CHANGE COLUMN HP Weapon INT;
+
+
+
+
+
