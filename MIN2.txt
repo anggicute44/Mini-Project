@@ -1,0 +1,210 @@
+1.
+
+CREATE TABLE prodi (
+    namaprodi VARCHAR(100) PRIMARY KEY,
+    gedung VARCHAR(100),
+    kaprodi VARCHAR(100)
+);
+
+
+CREATE TABLE Mata_kuliah (
+    kodematkul VARCHAR(6) PRIMARY KEY,
+    namamatkul VARCHAR(100) NOT NULL,
+    sks INT NOT NULL,
+    namaprodi VARCHAR(100),
+    FOREIGN KEY (namaprodi) REFERENCES Prodi(namaprodi)
+);
+
+desc mata_kuliah;
+
+
+2.-- Mengubah tindakan ON DELETE menjadi CASCADE
+ALTER TABLE mata_kuliah
+DROP FOREIGN KEY mata_kuliah_ibfk_1;
+
+ALTER TABLE mata_kuliah
+ADD CONSTRAINT fk_namaprodi
+FOREIGN KEY (namaprodi) 
+REFERENCES prodi(namaprodi) 
+ON DELETE CASCADE 
+ON UPDATE CASCADE;
+
+
+
+
+3.INSERT INTO Mata_kuliah (kodematkul, namamatkul, sks, namaprodi)
+VALUES ('TI0181', 'Praktikum SBD', 3, 'Informatika');
+
+SELECT * FROM matakuliah;
+
+
+
+4.INSERT INTO Prodi (namaprodi, gedung, kaprodi)
+VALUES ('Biologi', 'Eunoia', 'Dwi Aditiyarini'),
+       ('Informatika', 'Agape', 'Joko Purwadi');
+SELECT * FROM prodi;
+
+
+
+
+
+5.
+DELETE FROM mata_kuliah WHERE kodematkul = 'TI0181'; ATAU 
+DELETE FROM mata_kuliah;
+
+
+
+INSERT INTO mata_kuliah (kodematkul, namamatkul, sks, namaprodi) 
+VALUES 
+('BI1063', 'Genetika', 3, 'Biologi'),
+('FK6033', 'Metode Penelitian', 3, 'Kedokteran');
+
+
+
+6.UPDATE prodi
+SET namaprodi = 'Bioteknologi'
+WHERE namaprodi = 'Biologi';
+
+select * from prodi;
+
+
+7.DELETE FROM prodi
+WHERE namaprodi = 'Informatika';
+
+
+8.ALTER TABLE mata_kuliah
+DROP FOREIGN KEY fk_namaprodi;
+
+ALTER TABLE mata_kuliah
+ADD CONSTRAINT fk_namaprodi
+FOREIGN KEY (namaprodi) REFERENCES prodi(namaprodi)
+ON DELETE SET NULL;
+
+
+SHOW CREATE TABLE mata_kuliah;
+
+
+9.DELETE FROM prodi
+WHERE namaprodi = 'Bioteknologi';
+
+
+10.
+
+MariaDB [akademik]> DELETE FROM prodi WHERE namaprodi = 'Pendidikan Dokter';
+
+UPDATE prodi
+SET namaprodi = 'Pendidikan Dokter'
+WHERE namaprodi = 'Kedokteran';
+
+11.ALTER TABLE mata_kuliah
+DROP FOREIGN KEY fk_namaprodi;
+
+ALTER TABLE mata_kuliah
+ADD CONSTRAINT fk_namaprodi
+FOREIGN KEY (namaprodi) REFERENCES prodi(namaprodi)
+ON DELETE RESTRICT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------
+1.*Gunakan database yang sudah ada atau buat database baru
+
+CREATE DATABASE IF NOT EXISTS nama_database_anda;
+USE nama_database_anda;
+
+CREATE TABLE Pekerjaan (
+    idPekerjaan INT PRIMARY KEY,
+    namaPekerjaan VARCHAR(30) NOT NULL
+);
+
+
+CREATE TABLE Pegawai (
+    pegawaiID VARCHAR(20) PRIMARY KEY,
+    namaPegawai VARCHAR(30) NOT NULL,
+    usia VARCHAR(30),
+    Agama VARCHAR(30),
+    jenisKelamin INT(1),
+    idPekerjaan INT,
+    CONSTRAINT fk_pekerjaan
+        FOREIGN KEY (idPekerjaan)
+        REFERENCES Pekerjaan(idPekerjaan)
+        ON DELETE SET NULL
+        ON UPDATE SET NULL
+);
+
+SHOW TABLES;
+
+2.2.	Ubahlah tipe data dari kolom/field usia menjadi INT(11) kemudian tambahkan constraint bernama check_usia (pada kolom usia di tabel pegawai) untuk mengecek apakah usia lebih dari 17 dan kurang dari 30 jika iya maka data berhasil dimasukan. Tampilkan struktur tabel pegawai 
+
+jawab: 
+ALTER TABLE Pegawai
+MODIFY COLUMN usia INT(11);
+
+ALTER TABLE Pegawai
+ADD CONSTRAINT check_usia
+CHECK (usia > 17 AND usia < 30);
+DESCRIBE Pegawai;
+
+
+3.Menghapus foreign key idPekerjaan yang ada pada tabel pegawai sebelumnya dan mengganti foreign key yang baru dengan mengubah ON DELETE dan ON UPDATE menjadi CASCADE 
+
+
+jawab:
+ALTER TABLE Pegawai
+DROP FOREIGN KEY fk_pekerjaan;
+ALTER TABLE Pegawai
+ADD CONSTRAINT fk_pekerjaan
+FOREIGN KEY (idPekerjaan)
+REFERENCES Pekerjaan(idPekerjaan)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+4.UBAHLAH TIPE DATA kolom/ field berikut:
+a.UBAH Tipe data pada kolom pegawaiID di tabel Pegawai menjadi CHAR(5) 
+:ALTER TABLE Pegawai
+MODIFY COLUMN pegawaiID CHAR(5);
+
+
+b.UBAH Tipe data pada kolom jenisKelamin di tabel Pegawai menjadi enum(“L”,”P”) 
+:ALTER TABLE Pegawai
+MODIFY COLUMN jenisKelamin ENUM('L', 'P');
+
+
+5.Lakukan 
+a.Ubahlah nama tabel Pegawai menjadi Pekerja 
+:RENAME TABLE Pegawai TO Pekerja;
+
+b.Tambahkan kolom alamat tipe data text pada tabel Pekerja (sebelumnya Pegawai) 
+:ALTER TABLE Pekerja
+ADD COLUMN alamat TEXT;
+
+
+6.Kerjakan dengan ikuti petunjuk!
+a.Hapuslah kolom/field Agama pada tabel Pekerja (sebelumnya pegawai) 
+:ALTER TABLE Pekerja
+DROP COLUMN Agama;
+
+
+
+b.Tambahkan constraint bernama namaunik pada kolom namaPegawai di tabel Pekerja memastikan bahwa isi kolom tersebut unik
+:ALTER TABLE Pekerja
+ADD CONSTRAINT namaunik
+UNIQUE (namaPegawai);
+DESCRIBE Pekerja;
+
+
+
+
