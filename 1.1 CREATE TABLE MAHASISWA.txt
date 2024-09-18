@@ -1,0 +1,144 @@
+1.1 CREATE TABLE MAHASISWA (
+    NIM VARCHAR(8),
+    namaMahasiswa VARCHAR(50),
+    jurusan VARCHAR(50),
+    angkatan INT,
+    tglLahir DATE
+);
+
+1.2 INSERT INTO MAHASISWA (NIM, namaMahasiswa, jurusan, angkatan, tglLahir) 
+VALUES 
+('12345678', 'DIMAS', 'Teknik Informatika', 2019, '2000-09-01'),
+('23456789', 'GILBERT', 'Sistem Informasi', 2019, NULL),
+('34567891', 'LINTANG', 'Teknik Informatika', 2019, '2000-01-10');
+
+1.3 INSERT INTO MAHASISWA (NIM, namaMahasiswa, jurusan, angkatan) 
+VALUES 
+('45678912', 'SETYO', 'Sistem Informasi', 2020),
+('56789123', 'GRACE', 'Arsitektur', 2023);
+
+1.4 INSERT IGNORE INTO MAHASISWA (NIM, namaMahasiswa, jurusan, angkatan, tglLahir)
+VALUES ('45678912', 'ANI', 'Teknik Informatika', 2020, '2001-09-05');
+
+1.5 INSERT INTO MAHASISWA (NIM, namaMahasiswa, jurusan, angkatan, tglLahir)
+VALUES 
+('23456789', 'MICHAEL', 'Teknik Informatika', 2019, '2001-09-05'),
+('34567891', 'CYNTHIA', 'Sistem Informasi', 2019, '2002-09-11')
+ON DUPLICATE KEY UPDATE jurusan = VALUES(jurusan), tglLahir = VALUES(tglLahir);
+
+
+2.1 UPDATE MAHASISWA
+SET jurusan = 'Arsitektur'
+WHERE NIM = '71190001';
+
+2.2 UPDATE MAHASISWA
+SET angkatan = NULL
+WHERE tglLahir < '2001-09-05';
+
+2.3 UPDATE MAHASISWA
+SET jurusan = 'Manajemen Informatika', angkatan = 2024
+WHERE NIM = '12345678';
+
+3.1 DELETE FROM MAHASISWA
+WHERE tglLahir IS NULL
+LIMIT 2;
+
+3.2 DELETE FROM MAHASISWA
+WHERE angkatan >= 2023;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.CREATE DATABASE PT3_71230000;
+USE PT3_71230000;
+
+CREATE TABLE lagu (
+    id_lagu INT(11) AUTO_INCREMENT NOT NULL,
+    judul_lagu VARCHAR(50) NOT NULL,
+    artis VARCHAR(100) NOT NULL,
+    tgl_rilis DATE NOT NULL,
+    album VARCHAR(50) NOT NULL,
+    genre_lagu VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id_lagu)
+);
+
+2. Isilah tabel dengan data yang diberikan dalam satu query INSERT
+
+INSERT INTO lagu (judul_lagu, artis, tgl_rilis, album, genre_lagu) 
+VALUES 
+('Die With A Smile', 'Bruno Mars', '2027-08-15', 'Die With A Smile', 'Pop'),
+('Locked Out Of Heaven', 'Bruno Mars', '2012-10-01', 'Butter', 'Pop'),
+('Espresso', 'Sabrina Carpenter', '2024-04-11', 'Short n Sweet', 'Funk'),
+('Warung Bekicot', 'Bekicot Magetan', '1976-01-27', 'Warung Bekicot', 'Rock'),
+('Symphony', 'Clean Bandit', '2017-03-17', 'So Good', 'Country'),
+('Armageddon', 'Ayu Ting-Ting', '2024-05-27', 'Armageddon', 'J-Pop');
+
+
+3. Perbarui data lagu berjudul "Armageddon"
+
+UPDATE lagu 
+SET artis = 'Aespa', genre_lagu = 'Pop' 
+WHERE judul_lagu = 'Armageddon';
+
+4. Ubah tanggal rilis lagu bergenre "Rock"
+
+UPDATE lagu 
+SET tgl_rilis = '2022-11-27' 
+WHERE genre_lagu = 'Rock';
+
+5. Hapus lagu bergenre "Pop" yang dinyanyikan oleh Bruno Mars
+
+DELETE FROM lagu 
+WHERE genre_lagu = 'Pop' AND artis = 'Bruno Mars';
+
+6. Hapus lagu dengan id_lagu genap
+DELETE FROM lagu 
+WHERE id_lagu % 2 = 0;
+SELECT * FROM lagu;
+
+untuk ganjil:
+DELETE FROM lagu
+WHERE id_lagu % 2 != 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
