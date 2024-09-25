@@ -1,0 +1,209 @@
+TABEL
+CREATE TABLE registrasi (
+    nim INT(4) NOT NULL,
+    idMtk VARCHAR(7) NOT NULL,
+    grup CHAR(1) NOT NULL,
+    semester VARCHAR(5) NOT NULL,
+    tahun VARCHAR(4) NOT NULL,
+    nilaiAngka FLOAT(4,2) NOT NULL,
+    PRIMARY KEY (nim, idMtk, grup, semester)
+);
+
+INSERT INTO registrasi (nim, idMtk, grup, semester, tahun, nilaiAngka) VALUES
+(1234, 'TI-101', 'A', 'Gasal', '2024', 86.55),
+(1212, 'TI-190', 'B', 'Gasal', '2024', 84.03),
+(2211, 'SI-201', 'A', 'Genap', '2024', 72.76),
+(1414, 'SI-290', 'A', 'Genap', '2024', 62.56),
+(4321, 'TI-101', 'B', 'Genap', '2024', 65.93),
+(2222, 'TI-190', 'B', 'Gasal', '2023', 90.00),
+(1212, 'TI-101', 'A', 'Gasal', '2023', 80.47),
+(1234, 'TI-190', 'A', 'Gasal', '2023', 78.20);
+
+
+
+
+
+
+1. Tampilkan NIM mahasiswa yang mengambil mata kuliah TI-190 Semester Gasal 2023!
+
+SELECT nim 
+FROM registrasi 
+WHERE idMtk = 'TI-190' 
+AND semester = 'Gasal' 
+AND tahun = '2023';
+
+
+missal menampilkan lebibih dari satu kolam
+SELECT nim, idMtk, nilaiAngka, grup
+FROM registrasi 
+
+2. Tampilkan kode mata kuliah yang ditawarkan pada Semester Genap 2024!
+
+SELECT idMtk 
+FROM registrasi 
+WHERE semester = 'Genap' 
+AND tahun = '2024';
+
+3. Tampilkan NIM, kode mata kuliah dan nilai dalam satu kolom dengan nama kolom KHS, dengan
+delimiter/pemisah berupa karakter ‘ - ‘!
+
+SELECT CONCAT(nim, ' - ', idMtk, ' - ', nilaiAngka) AS KHS 
+FROM registrasi;
+
+
+4. Tampilkan data registrasi dari Semester Gasal 2024 diurutkan nilai angka terbesar menuju
+terkecil!
+
+SELECT * 
+FROM registrasi 
+WHERE semester = 'Gasal' 
+AND tahun = '2024' 
+ORDER BY nilaiAngka DESC;
+
+kalua tampilkan semuanya:
+SELECT * 
+FROM registrasi 
+WHERE semester = 'Gasal'
+ORDER BY nilaiAngka DESC;
+
+TERKECI KE TERBESAR;
+SELECT * 
+FROM registrasi 
+WHERE semester = 'Gasal'
+ORDER BY nilaiAngka ASC;
+
+
+
+
+5. Tampilkan data registrasi untuk mata kuliah selain SI-201!
+
+SELECT * 
+FROM registrasi 
+WHERE idMtk != 'SI-201';
+
+6. Tampilkan NIM, kode mata kuliah, grup dan nilai angka bagi mahasiswa yang nilainya antara 70
+hingga 80!
+
+SELECT nim, idMtk, grup, nilaiAngka 
+FROM registrasi 
+WHERE nilaiAngka BETWEEN 70 AND 80;
+
+
+7. Tampilkan nim, matakuliah yang diambil oleh mahasiswa yang karakter ke-3 dari nim adalah 1.
+
+SELECT nim, idMtk 
+FROM registrasi 
+WHERE nim LIKE '__1%';
+ 
+
+8. Tampilkan matakuliah yang berasal dari prodi TI dan hanya sekali muncul (tidak boleh
+menampilkan data yang sama).
+
+
+SELECT DISTINCT idMtk
+FROM registrasi
+WHERE idMtk LIKE 'TI-%';
+ jadi walaupun matkul nya ada kembar akan tetap di tampilkan cuma satu semacam perwakilan
+
+
+9.Dengan menggunakan logika keyword IF seperti pada Excel atau Google Sheet, buatlah tampilan
+sebagai berikut:
+
+
+SELECT nim,idMtk,grup, semester, tahun, nilaiAngka,
+    IF(nilaiAngka >= 80, 'Cool!', 'Uncool!') AS predikat
+FROM registrasi;
+
+ATAU
+
+SELECT nim, idMtk, 
+       IF(nilaiAngka > 60, 'Lulus', 'Tidak Lulus') AS status 
+FROM registrasi;
+
+
+
+10. Agar sistem dapat memunculkan informasi nama mahasiswa, apa yang harus dilakukan?
+
+SELECT registrasi.nim, mahasiswa.nama 
+FROM registrasi 
+JOIN mahasiswa ON registrasi.nim = mahasiswa.nim;
+   
+HARUS HUBUNGKAN TABEL MAHASISWA DENGAN TABEL REGITRSAI
+
+11. Agar sistem dapat memunculkan informasi SKS setiap mata kuliahnya, apa yang harus
+dilakukan?
+
+
+SELECT registrasi.idMtk, matakuliah.sks 
+FROM registrasi 
+JOIN matakuliah ON registrasi.idMtk = matakuliah.idMtk;
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------
+
+
+
+
+1.Buatlah Table mengenai dataMahasiswa dengan ketentuan sebagai berikut: 
+
+CREATE TABLE dataMahasiswa(
+    nim int(8) not null PRIMARY KEY,
+    nama_mahasiswa varchar(255) not null,
+    nama_ayah varchar(255) not null,
+    nama_ibu varchar(255) not null,
+    gender enum('F','M') not null,
+    tinggi_badan float not null,
+    berat_badan float not null
+    );
+
+2.Masukkan Data data berikut : 
+insert INTO dataMahasiswa VALUES
+    (71230550, 'Ahmad Nur', 'Budi Rahman', 'Siti Aisyah', 'M', 170.5, 65.2),
+    (71230587, 'Siti Marlina', 'Joko Prasetyo', 'Rina Kartika', 'F', 160.3, 54.7),
+    (71230612, 'Dedi Saputra', 'Agus Santoso', 'Sri Mulyani', 'M', 175.0, 72.3),
+    (71230570, 'Lia Puspita', 'Bayu Wibowo', 'Indah Susanti', 'F', 158.7, 50.1),
+    (71230632, 'Fahmi Alwi', 'Dian Kusuma', 'Ayu Lestari', 'M', 168.9, 62.0),
+    (71230655, 'Putri Anggraeni', 'Eko Budiman', 'Ratna Sari', 'F', 162.4, 58.9),
+    (71230595, 'Rizky Darmawan', 'Fajar Hidayat', 'Nur Azizah',	'M', 180.2,	78.4),
+    (71230677, 'Dian Novita', 'Hendra Sugianto', 'Maya Dewi', 'F',159.5, 55.0),
+    (71230618, 'Taufik Hidayat', 'Irwan Subagyo', 'Rini Andini','M', 173.8, 70.5),
+    (71230562, 'Rina Setiawan', 'Ahmad Fauzi', 'Sari Fatimah', 'F',	161.2, 56.3)
+    ;
+
+
+3.Tampilkan nama mahasiswa dan nim untuk mahasiswa yang memiliki tinggi badan diatas 162 dan diurutkan berdasarkan berat badan
+
+SELECT nama_mahasiswa, nim
+    -> FROM datamahasiswa
+    -> WHERE tinggi_badan > 162
+    -> ORDER BY tinggi_badan DESC;
+
+4.Tampilkan nama ibu dan nama ayah untuk mahasiswa yang memiliki berat badan dibawah 55 dan bergender Female 
+
+SELECT nama_ibu, nama_ayah
+FROM datamahasiswa
+WHERE berat_badan <55 AND gender = 'F'
+;
+
+
+5.Tampilkan nim dan nama mahasiswa serta nama kedua orang tua (dalam 1 kolom yang ditambahkan kata “dan”) dengan nama kolom “orangTua”
+cth hasil : “Budi Rahman dan Siti Aisyah”
+
+SELECT nim, nama_mahasiswa,concat(nama_ibu, ' dan ', nama_ayah) AS orangTua FROM datamahasiswa;
+
+
+
+
+
+
+
