@@ -1,0 +1,245 @@
+1. Lakukan DDL terhadap tabel-tabel di atas.
+
+CREATE TABLE CUSTOMER (
+    cust_id INT PRIMARY KEY,
+    cust_name VARCHAR(50),
+    cust_dob DATE,
+    cust_email VARCHAR(100)
+);
+
+CREATE TABLE EMPLOYEES (
+    emp_id VARCHAR(10) PRIMARY KEY,
+    emp_name VARCHAR(50),
+    emp_phone VARCHAR(15)
+);
+
+CREATE TABLE ITEM (
+    item_id VARCHAR(10) PRIMARY KEY,
+    item_name VARCHAR(100),
+    item_price INT
+);
+
+CREATE TABLE ORDERS (
+    invoice_no INT PRIMARY KEY,
+    order_date DATE,
+    cust_id INT,
+    emp_id VARCHAR(10),
+    FOREIGN KEY (cust_id) REFERENCES CUSTOMER(cust_id),
+    FOREIGN KEY (emp_id) REFERENCES EMPLOYEES(emp_id)
+);
+
+CREATE TABLE DETAIL_ORDERS (
+    detail_id INT PRIMARY KEY,
+    invoice_no INT,
+    item_id VARCHAR(10),
+    quantity INT,
+    FOREIGN KEY (invoice_no) REFERENCES ORDERS(invoice_no),
+    FOREIGN KEY (item_id) REFERENCES ITEM(item_id)
+);
+
+
+
+
+
+
+
+
+2. Lakukan DML INSERT secepat mungkin.
+
+-- Tabel CUSTOMER
+INSERT INTO CUSTOMER (cust_id, cust_name, cust_dob, cust_email)
+VALUES 
+(1, 'wanto', '2000-01-01', 'wanto@gmail.com'),
+(2, 'wanti', '2000-07-01', 'wanti@gmail.com'),
+(3, 'theo', '1999-08-14', 'theo@gmail.com'),
+(4, 'iwan', '2001-01-05', 'iwan@gmail.com'),
+(5, 'toni', '2001-12-12', 'toni@gmail.com');
+
+-- Tabel EMPLOYEES
+INSERT INTO EMPLOYEES (emp_id, emp_name, emp_phone)
+VALUES 
+('E01', 'roger', '087722223333'),
+('E02', 'rika', '085644442222'),
+('E03', 'rupawan', '089877776666'),
+('E04', 'gigi', '081944567890');
+
+-- Tabel ITEM
+INSERT INTO ITEM (item_id, item_name, item_price)
+VALUES
+('IT001', 'Apple iPhone 11', 17600000),
+('IT002', 'Xiaomi Mi 9', 7500000),
+('IT003', 'Samsung S10', 11230000),
+('IT004', 'Oppo F11', 4500000),
+('IT005', 'Vivo Nex3', 5375000),
+('IT006', 'Nokia 3310', 750000),
+('IT007', 'Nokia n-Gage', 1200000);
+
+-- Tabel ORDERS
+INSERT INTO ORDERS (invoice_no, order_date, cust_id, emp_id)
+VALUES
+(1, NOW(), 1, 'E01'),
+(2, NOW(), 2, 'E03'),
+(3, NOW(), 3, 'E02');
+
+-- Tabel DETAIL_ORDERS
+INSERT INTO DETAIL_ORDERS (detail_id, invoice_no, item_id, quantity)
+VALUES
+(1, 1, 'IT001', 1),
+(2, 1, 'IT002', 2),
+(3, 2, 'IT001', 1),
+(4, 2, 'IT003', 3),
+(5, 2, 'IT004', 1),
+(6, 3, 'IT005', 5);
+
+
+
+3. Tampilkan semua data item yang pernah dibeli oleh customer
+
+SELECT DISTINCT item_name
+FROM ITEM
+JOIN DETAIL_ORDERS ON ITEM.item_id = DETAIL_ORDERS.item_id;
+
+
+4. Tampilkan semua item yang belum pernah dibeli oleh customer
+
+SELECT item_name
+FROM ITEM
+WHERE item_id NOT IN (
+    SELECT item_id FROM DETAIL_ORDERS
+);
+
+
+5. Tampilkan item yang memiliki harga lebih dari 1.000.000
+
+SELECT * FROM ITEM WHERE item_price > 1000000;
+
+
+
+
+6. Tampilkan data detail_orders yang memiliki order
+
+SELECT * FROM DETAIL_ORDERS;
+
+
+7. Tampilkan data order beserta nama customer dan nama employees
+
+SELECT O.invoice_no, C.cust_name, E.emp_name
+FROM ORDERS O
+JOIN CUSTOMER C ON O.cust_id = C.cust_id
+JOIN EMPLOYEES E ON O.emp_id = E.emp_id;
+
+
+8. Tampilkan employee yang belum pernah membuat order
+SELECT emp_name 
+FROM EMPLOYEES 
+WHERE emp_id NOT IN (SELECT emp_id FROM ORDERS);
+
+
+9. Tampilkan item yang pernah beli oleh wanti
+
+SELECT item_name
+FROM ITEM
+JOIN DETAIL_ORDERS ON ITEM.item_id = DETAIL_ORDERS.item_id
+JOIN ORDERS ON DETAIL_ORDERS.invoice_no = ORDERS.invoice_no
+JOIN CUSTOMER ON ORDERS.cust_id = CUSTOMER.cust_id
+WHERE CUSTOMER.cust_name = 'wanti';
+
+
+10. Tampilkan item yang perlu dibeli oleh customer theo
+
+SELECT item_name
+FROM ITEM
+WHERE item_id NOT IN (
+    SELECT item_id
+    FROM DETAIL_ORDERS
+    JOIN ORDERS ON DETAIL_ORDERS.invoice_no = ORDERS.invoice_no
+    WHERE cust_id = (SELECT cust_id FROM CUSTOMER WHERE cust_name = 'theo')
+);
+
+
+11. Tampilkan nama employee dan invoice_id, tampilkan juga employee yang belum melayani order.
+Jika belum punya order, nama employee ditampilkan dengan ‘-belum ada order-’
+
+SELECT E.emp_name, COALESCE(O.invoice_no, '-belum ada order-')
+FROM EMPLOYEES E
+LEFT JOIN ORDERS O ON E.emp_id = O.emp_id;
+
+
+12. Tampilkan nama pembeli yang dilayani oleh rupawan.
+
+
+SELECT C.cust_name
+FROM CUSTOMER C
+JOIN ORDERS O ON C.cust_id = O.cust_id
+JOIN EMPLOYEES E ON O.emp_id = E.emp_id
+WHERE E.emp_name = 'rupawan';
+
+
+
+
+
+
+
+
+
+------------------------------------------------
+
+1. Tampilkan ID_pesanan, nama_menu, dan harga yang memiliki harga dibawah 
+15.000 dengan struktur yang sama dengan hasil di bawah ini: 
+
+
+SELECT pesanan.id_pesanan, menu.nama_menu, menu.harga 
+FROM pesanan
+INNER JOIN menu on pesanan.id_menu = menu.id_menu
+WHERE harga < 15000;
+
+
+2.Tampilkan Nama Pelanggan yang memesan makanan pada tanggal 12, 
+dengan struktur yang sama dengan hasil di bawah ini. (0.6 poin
+
+
+SELECT pelanggan.nama_pelanggan, menu.jenis, pesanan.tanggal_pesanan
+FROM pelanggan
+NATURAL JOIN menu NATURAL JOIN pesanan
+WHERE pesanan.tanggal_pesanan = '2024-09-12'
+AND menu.jenis = 'Makanan';
+
+
+3. Tampilkan nama pelanggan, nama menu, tanggal pesanan dan jumlah 
+pesanan dengan memperhatikan jumlah pesanan tidak boleh kurang dari 3.
+Berikut data yang akan tertampil seperti contoh di bawah ini. (0.6 poin)
+
+
+SELECT pelanggan.nama_pelanggan, menu.nama_menu, pesanan.tanggal_pesanan, 
+pesanan.jumlah
+FROM pelanggan
+NATURAL JOIN menu NATURAL JOIN pesanan
+WHERE pesanan.jumlah >2
+
+
+4. Tampilkan nama pelanggan, id menu, tanggal pesanan, jumlah pesanan 
+dan harga. Kolom baru Keterangan Lanjutan berisi keterangan “Diskon 2000 
+” apabila harga total 35.000 atau lebih dan “Tidak ada diskon” apabila 
+kurang dari 35.000. Berikut data yang akan tertampil seperti contoh di 
+bawah ini (0.6 poin
+
+
+SELECT pelanggan.nama_pelanggan, menu.id_menu, pesanan.tanggal_pesanan, 
+pesanan.jumlah, menu.harga, IF(menu.harga * pesanan.jumlah >= 35000, "Diskon 2000", 
+"Tidak Ada Diskon") AS "Keterangan Diskon"
+FROM pelanggan
+NATURAL JOIN menu NATURAL JOIN pesanan
+;
+
+
+5. Tampilkan semua pesanan termasuk informasi tentang nama pelanggan, 
+nama menu, tanggal pemesanan, jumlah pesanan, harga(diberi nama 
+harga satuan), dan harga total. HARUS menggunakan Tipe Join yaitu OUTER JOIN. Berikut data yang akan tertampil seperti contoh di bawah ini
+
+SELECT pelanggan.nama_pelanggan, menu.nama_menu, pesanan.tanggal_pesanan, pe
+sanan.jumlah, menu.harga AS 'harga 
+satuan', menu.harga * pesanan.jumlah AS 'harga 
+total' FROM pelanggan LEFT JOIN pesanan ON pelanggan.id_pelanggan = pesanan.
+id_pelanggan LEFT JOIN menu ON menu.id_menu = pesanan.id_menu;
+
+
