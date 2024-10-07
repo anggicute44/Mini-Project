@@ -1,0 +1,268 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class SLLNC:
+    def __init__(self):
+        self.head = None
+
+    def insert(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def list_items(self, indices):
+        current = self.head
+        words = []
+        
+        # Mengumpulkan semua kata dari linked list
+        while current:
+            words.append(current.data)
+            current = current.next
+
+        # Menampilkan kata berdasarkan indeks yang diminta
+        for index in indices:
+            if 1 <= index <= len(words):  # Memeriksa apakah indeks valid
+                print(words[index - 1], end=" ")
+            else:
+                print(f"Indeks {index} tidak valid.", end=" ")
+        print()  # Untuk pindah ke baris baru setelah semua output
+
+def main():
+    linked_list = SLLNC()
+    
+    # Meminta input dari pengguna
+    input_words = input("Masukkan kata-kata: ").split()
+    
+    for word in input_words:
+        linked_list.insert(word)
+
+    # Meminta input untuk indeks
+    indices = list(map(int, input("Masukkan nomor urut: ").split()))
+    
+    print("Hasil:", end=" ")
+    linked_list.list_items(indices)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+-----------------------------------
+Menambahkan Elemen ke Linked List:
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
+
+# Penggunaan
+ll = LinkedList()
+for value in [10, 20, 30, 40]:
+    ll.insert(value)
+
+print("Isi linked list:")
+ll.display()
+Isi linked list:
+10 -> 20 -> 30 -> 40 -> None
+
+
+
+
+-------------------------------------------
+Mencari Elemen dalam Linked List:
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def find(self, value):
+        current = self.head
+        index = 0
+        while current:
+            if current.data == value:
+                return index
+            current = current.next
+            index += 1
+        return -1
+
+# Penggunaan
+ll = LinkedList()
+for value in [10, 20, 30, 40]:
+    ll.insert(value)
+
+value_to_find = 30
+index = ll.find(value_to_find)
+if index != -1:
+    print(f"Elemen {value_to_find} ditemukan pada indeks {index}.")
+else:
+    print(f"Elemen {value_to_find} tidak ditemukan.")
+
+
+
+
+--------------------------------
+Menghapus Elemen dari Linked List:
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def delete(self, value):
+        current = self.head
+        previous = None
+        while current:
+            if current.data == value:
+                if previous:
+                    previous.next = current.next
+                else:
+                    self.head = current.next
+                return True
+            previous = current
+            current = current.next
+        return False
+
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
+
+# Penggunaan
+ll = LinkedList()
+for value in [10, 20, 30, 40]:
+    ll.insert(value)
+
+print("Isi linked list sebelum penghapusan:")
+ll.display()
+
+value_to_delete = 30
+if ll.delete(value_to_delete):
+    print(f"Elemen {value_to_delete} dihapus.")
+else:
+    print(f"Elemen {value_to_delete} tidak ditemukan.")
+
+print("Isi linked list setelah penghapusan:")
+ll.display()
+
+output:Isi linked list sebelum penghapusan:
+10 -> 20 -> 30 -> 40 -> None
+Elemen 30 dihapus.
+Isi linked list setelah penghapusan:
+10 -> 20 -> 40 -> None
+
+
+
+
+
+
+
+
+
+------------------------------
+Membalkan linked list
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def reverse(self):
+        prev = None
+        current = self.head
+        while current:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+        self.head = prev
+
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data, end=" -> ")
+            current = current.next
+        print("None")
+
+# Penggunaan
+ll = LinkedList()
+for value in [10, 20, 30, 40]:
+    ll.insert(value)
+
+print("Isi linked list sebelum dibalik:")
+ll.display()
+
+ll.reverse()
+print("Isi linked list setelah dibalik:")
+ll.display()
+
+
