@@ -1,0 +1,74 @@
+class Buku:
+
+    def __init__(self, judul=None, penulis=None, tahunterbit=0, jenis=None, harga=0.0):
+        self._judul = judul
+        self._penulis = penulis
+        self._tahunterbit = tahunterbit
+        self._jenis = jenis
+        self._harga = harga
+
+    # Getter and Setter for judul
+    @property
+    def judul(self):
+        return self._judul
+    
+    @judul.setter
+    def judul(self, value):
+        self._judul = value
+
+    # Getter and Setter for penulis
+    @property
+    def penulis(self):
+        return self._penulis
+
+    @penulis.setter
+    def penulis(self, value):
+        self._penulis = value
+
+    # Getter and Setter for tahunTerbit
+    @property
+    def tahunTerbit(self):
+        return self._tahunterbit
+
+    @tahunTerbit.setter
+    def tahunTerbit(self, value):
+        self._tahunterbit = value
+
+    # Getter and Setter for jenis
+    @property
+    def jenis(self):
+        return self._jenis
+
+    @jenis.setter
+    def jenis(self, value):
+        self._jenis = value
+
+    # Getter and Setter for harga
+    @property
+    def harga(self):
+        return self._harga
+
+    @harga.setter
+    def harga(self, value):
+        self._harga = value
+
+    # Method to print information about the book
+    def printInformasi(self):
+        print(f"Judul: {self.judul}, Penulis: {self.penulis}, Tahun Terbit: {self.tahunTerbit}")
+
+    # Method to calculate the age of the book
+    def umurBuku(self):
+        tahun_sekarang = 2023
+        return tahun_sekarang - self.tahunTerbit
+
+    # Method to calculate the price of the book after discount
+    def hargaBuku(self):
+        diskon = 0
+        if self.umurBuku() > 50:  # Diskon 10% hanya jika umur buku lebih dari 50 tahun
+            diskon += 0.10
+        if self.jenis.lower() == "fiksi":
+            diskon += 0.05
+        elif self.jenis.lower() == "nonfiksi":
+            diskon += 0.02
+        harga_setelah_diskon = self.harga * (1 - diskon)
+        return harga_setelah_diskon
