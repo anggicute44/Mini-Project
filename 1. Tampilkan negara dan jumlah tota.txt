@@ -1,0 +1,177 @@
+1. Tampilkan negara dan jumlah total pendapatan film (worlwide_gross_income) untuk
+setiap negara. Urutkan berdasarkan pendapatan tertinggi.
+
+
+SELECT country, SUM(worlwide_gross_income) AS total_income
+FROM movie
+GROUP BY country
+ORDER BY total_income DESC;
+
+
+------------------
+
+SELECT country, worlwide_gross_income
+FROM movie
+ORDER BY worlwide_gross_income DESC;
+
+
+
+
+
+2. Tampilkan jumlah film yang diproduksi per negara. Urutkan hasilnya berdasarkan
+jumlah film dari yang tertinggi ke yang terendah.
+
+SELECT country, COUNT(*) AS jumlah_film
+FROM movie
+GROUP BY country
+ORDER BY jumlah_film DESC;
+
+
+
+
+
+3. Tampilkan setiap genre beserta jumlah film yang termasuk dalam genre tersebut.
+
+
+
+SELECT genre, COUNT(movie_id) AS jumlah_film
+FROM genre
+GROUP BY genre;
+
+
+4. Tampilkan rata-rata durasi film untuk setiap genre. Urutkan hasilnya berdasarkan rata-
+rata durasi dari yang terpendek ke yang terpanjang.
+
+SELECT genre, AVG(duration) AS rata_durasi
+FROM genre
+JOIN movie ON genre.movie_id = movie.id
+GROUP BY genre
+ORDER BY rata_durasi ASC;
+
+5. Tampilkan jumlah film yang dirilis setiap tahun. Urutkan hasilnya berdasarkan tahun
+dari yang terbaru ke yang terlama.
+
+SELECT year, COUNT(*) AS jumlah_film
+FROM movie
+GROUP BY year
+ORDER BY year DESC;
+
+
+6. Tampilkan genre yang memiliki rata-rata rating di atas 7. Urutkan hasilnya berdasarkan
+rata-rata rating dari yang tertinggi ke yang terendah.
+
+SELECT genre, AVG(ratings.avg_rating) AS rata_rating
+FROM genre
+JOIN ratings ON genre.movie_id = ratings.movie_id
+GROUP BY genre
+HAVING rata_rating > 7
+ORDER BY rata_rating DESC;
+
+
+7. Tampilkan jumlah aktor (name_id) yang terlibat dalam setiap film. Urutkan hasilnya
+berdasarkan jumlah aktor dari yang tertinggi ke yang terendah.
+
+SELECT m.title, COUNT(rm.name_id) AS jumlah_aktor
+FROM movie m
+JOIN role_mapping rm ON m.id = rm.movie_id
+WHERE rm.category = 'Actor'
+GROUP BY m.title
+ORDER BY jumlah_aktor DESC;
+
+
+8. Tampilkan judul film yang memiliki rata-rata rating di atas 8 dan total votes lebih dari
+
+1000. Sertakan juga rata-rata rating film tersebut. Urutkan hasilnya berdasarkan rata-
+rata rating dari yang tertinggi ke yang terendah.
+
+
+
+SELECT movie.title, ratings.avg_rating, ratings.total_votes
+FROM movie
+JOIN ratings ON movie.id = ratings.movie_id
+WHERE ratings.avg_rating > 8 AND ratings.total_votes > 1000
+ORDER BY ratings.avg_rating DESC;
+
+
+9. Tampilkan nama sutradara, jumlah film yang mereka sutradarai, dan rata-rata durasi
+(duration) dari film-film yang mereka buat.
+
+
+SELECT names.name, COUNT(director_mapping.movie_id) AS jumlah_film, AVG(movie.duration) AS rata_durasi
+FROM director_mapping
+JOIN names ON director_mapping.name_id = names.id
+JOIN movie ON director_mapping.movie_id = movie.id
+GROUP BY names.name;
+
+
+10. Cari nama sutradara yang telah menyutradarai jumlah film terbanyak.
+
+SELECT names.name, COUNT(director_mapping.movie_id) AS jumlah_film
+FROM director_mapping
+JOIN names ON director_mapping.name_id = names.id
+GROUP BY names.name
+ORDER BY jumlah_film DESC
+LIMIT 1;
+
+
+
+
+
+
+
+
+
+---------------------------------------------
+1. Tampilkan nama klub, total keseluruhan pemain dari masing-masing klub, kemudian 
+dikelompokkan berdasarkan nama klub dan diurutkan dari total pemain paling banyak.
+
+
+SELECT klub.namaKlub, COUNT(pemain.namaPemain) AS 'Total Pemain'
+FROM klub 
+INNER JOIN pemain ON klub.idKlub = pemain.idKlub
+GROUP BY klub.namaKlub
+ORDER BY COUNT(pemain.namaPemain) DESC
+
+
+-------------------------------
+SELECT klub.namaKlub, COUNT(pemain.namaPemain) AS 'Total Pemain'
+FROM klub 
+INNER JOIN pemain ON klub.idKlub = pemain.idKlub
+GROUP BY klub.namaKlub
+ORDER BY COUNT(pemain.namaPemain) ASC;
+
+
+2.Tampilkan nama klub dan rata-rata gol sebuah klub sebagai tim tamu dengan format 
+2 angka di belakang koma, kemudian dikelompokkan berdasarkan nama klub dan 
+diurutkan dari rata-rata gol tertinggi.
+
+
+SELECT klub.namaKlub AS 'Nama Klub', ROUND(AVG(pertandingan.SkorAway),2) AS 
+'Rata-rata gol sebagai tim tamu'
+FROM klub 
+INNER JOIN pertandingan ON klub.idKlub = pertandingan.IdKlubAway 
+GROUP BY klub.namaKlub
+ORDER BY AVG(pertandingan.SkorAway) DESC
+
+
+3.Tampilkan nama klub dan rata-rata gol pemain (1 angka dibelakang koma) dalam 
+sebuah klub yang memiliki rata-rata gol lebih dari 3 sesuai format di bawah (gunakan 
+having untuk syarat kondisi)
+
+SELECT klub.namaKlub AS 'Nama Klub', ROUND(AVG(pemain.jumlahGoal),1) AS 'Ratarata Gol'
+FROM klub 
+INNER JOIN pemain ON klub.idKlub = pemain.idKlub
+GROUP BY klub.namaKlub
+HAVING ROUND(AVG(pemain.jumlahGoal),1) > 3
+ORDER BY AVG(pemain.jumlahGoal)
+
+
+4.Tampilkan pemain top skop dengan format nama pemain dan juga jumlah gol pemain 
+tersebut (dilarang menggunakan where, harus menggunakan agregasi)
+
+SELECT concat(namaPemain, ' dengan total ', jumlahGoal, ' Gol') AS 'Pemain Top Skor'
+FROM pemain 
+HAVING MAX(jumlahGoal)
+Limit 1
+
+
