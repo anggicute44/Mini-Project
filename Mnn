@@ -1,0 +1,119 @@
+class Stack:
+    def __init__(self):
+        self._data = []
+
+    def dapatkanLen(self):
+        return len(self._data)
+
+    def dorong(self, data):
+        self._data.append(data)
+
+    def muncul(self):
+        if self.dapatkanLen() == 0:
+            return None
+        return self._data.pop()
+
+    def atas(self):
+        if self.dapatkanLen() == 0:
+            return None
+        return self._data[-1]
+
+    def cetakData(self):
+        for item in reversed(self._data):
+            print(item)
+
+# Fungsi untuk mengambil elemen paling bawah tanpa merusak urutan stack
+def printDataPertama(stack):
+    # Stack sementara untuk menyimpan elemen sementara
+    temp_stack = Stack()
+
+    # Keluarkan semua elemen dari stack dan pindahkan ke stack sementara
+    while stack.dapatkanLen() > 1:
+        temp_stack.dorong(stack.muncul())
+
+    # Ambil elemen paling bawah (yang terakhir tersisa di stack)
+    elemen_pertama = stack.muncul()
+    print(elemen_pertama)
+
+    # Kembalikan elemen-elemen dari stack sementara ke stack asli
+    while temp_stack.dapatkanLen() > 0:
+        stack.dorong(temp_stack.muncul())
+
+# Kasus uji
+if __name__ == "__main__":
+    s = Stack()
+    s.dorong(1)
+    s.dorong(2)
+    s.dorong(1.5)
+    s.dorong(5)
+    s.dorong(3)
+
+    print("Data stack")
+    s.cetakData()
+    print()
+    
+    print("Menampilkan Data stack paling bawah")
+    printDataPertama(s)
+    print()
+    
+    print("Pembuktian bahwa isi stack tidak berubah")
+    s.cetakData()class Stack:
+    def __init__(self):
+        self._data = []
+
+    def dapatkanLen(self):
+        return len(self._data)
+
+    def dorong(self, data):
+        self._data.append(data)
+
+    def muncul(self):
+        if self.dapatkanLen() == 0:
+            return None
+        return self._data.pop()
+
+    def atas(self):
+        if self.dapatkanLen() == 0:
+            return None
+        return self._data[-1]
+
+    def cetakData(self):
+        for item in reversed(self._data):
+            print(item)
+
+# Fungsi untuk mengambil elemen paling bawah tanpa merusak urutan stack
+def printDataPertama(stack):
+    # Stack sementara untuk menyimpan elemen sementara
+    temp_stack = Stack()
+
+    # Keluarkan semua elemen dari stack dan pindahkan ke stack sementara
+    while stack.dapatkanLen() > 1:
+        temp_stack.dorong(stack.muncul())
+
+    # Ambil elemen paling bawah (yang terakhir tersisa di stack)
+    elemen_pertama = stack.muncul()
+    print(elemen_pertama)
+
+    # Kembalikan elemen-elemen dari stack sementara ke stack asli
+    while temp_stack.dapatkanLen() > 0:
+        stack.dorong(temp_stack.muncul())
+
+# Kasus uji
+if __name__ == "__main__":
+    s = Stack()
+    s.dorong(1)
+    s.dorong(2)
+    s.dorong(1.5)
+    s.dorong(5)
+    s.dorong(3)
+
+    print("Data stack")
+    s.cetakData()
+    print()
+    
+    print("Menampilkan Data stack paling bawah")
+    printDataPertama(s)
+    print()
+    
+    print("Pembuktian bahwa isi stack tidak berubah")
+    s.cetakData()
