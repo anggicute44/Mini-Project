@@ -1,0 +1,75 @@
+class ArrayStack:
+    def __init__(self):
+        self._data = []  # Inisialisasi stack kosong
+
+    def __len__(self):
+        return len(self._data)  # Mengembalikan jumlah elemen dalam stack
+
+    def is_empty(self):
+        return len(self._data) == 0  # Mengecek apakah stack kosong
+
+    def push(self, e):
+        self._data.append(e)  # Menambahkan elemen di akhir list (atas stack)
+
+    def top(self):
+        if self.is_empty():
+            return "Stack kosong!"
+        return self._data[-1]  # Mengambil elemen terakhir (teratas)
+
+    def pop(self):
+        if self.is_empty():
+            return "Stack kosong!"
+        return self._data.pop()  # Menghapus elemen terakhir (teratas)
+
+    def print_all(self):
+        if self.is_empty():
+            return "Stack kosong!"
+        return " ".join(map(str, self._data))  # Menampilkan semua elemen stack
+
+
+def main():
+    stack = ArrayStack()
+    
+    while True:
+        print("\nPilihan:")
+        print("1. Masukkan angka")
+        print("2. Hapus elemen teratas")
+        print("3. Tampilkan elemen teratas")
+        print("4. Tampilkan semua elemen dalam stack")
+        print("5. Keluar")
+
+        choice = input("Pilih opsi (1-5): ")
+
+        if choice == '1':
+            user_input = input("Masukkan angka (atau -1 untuk batal): ")
+            try:
+                num = int(user_input)
+                if num == -1:
+                    print("Input dibatalkan.")
+                    continue
+                
+                stack.push(num)  # Menambahkan angka ke dalam stack
+                print(f"Angka {num} telah ditambahkan ke dalam stack.")
+            except ValueError:
+                print("Input harus berupa angka.")
+        
+        elif choice == '2':
+            popped_value = stack.pop()  # Menghapus elemen teratas
+            print(f"Elemen teratas yang dihapus: {popped_value}")
+
+        elif choice == '3':
+            print(f"Elemen teratas: {stack.top()}")  # Menampilkan elemen teratas
+
+        elif choice == '4':
+            print(f"Isi stack saat ini: {stack.print_all()}")  # Menampilkan semua elemen dalam stack
+
+        elif choice == '5':
+            print("Program selesai.")
+            break
+        
+        else:
+            print("Pilihan tidak valid. Silakan coba lagi.")
+
+
+if __name__ == "__main__":
+    main()
