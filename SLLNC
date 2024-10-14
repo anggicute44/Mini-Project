@@ -1,0 +1,155 @@
+class Node:
+    def __init__(self, value):
+        self.next = None
+        self.data = value
+
+class SLNC:
+    def __init__(self) -> None:
+        self.head = None
+        self.tail = None
+        self.size = 0
+
+    # Method untuk menghitung panjang linked list
+    def getLength(self):
+        return self.size
+
+    # Method untuk menampilkan semua data dalam linked list
+    def writeAllData(self):
+        if self.size == 0:
+            result = 'Linked list kosong'
+        else:
+            result = 'Linked List: ' + str(self.size) + ' data:\n'
+            helper = self.head
+            while helper is not None:
+                result += str(helper.data) + ' '
+                helper = helper.next
+        print(result)
+
+    # Method untuk memasukkan data di awal (head)
+    def insert_head(self, new_data):
+        node_baru = Node(new_data)
+        if self.size == 0:
+            self.head = node_baru
+            self.tail = node_baru
+        else:
+            node_baru.next = self.head
+            self.head = node_baru
+        self.size += 1
+    
+    # Method untuk memasukkan data di akhir (tail)
+    def insert_tail(self, new_data):
+        node_baru = Node(new_data)
+        if self.size == 0:
+            self.head = node_baru
+            self.tail = node_baru
+        else:
+            self.tail.next = node_baru
+            self.tail = node_baru
+        self.size += 1
+    
+    # Method untuk memasukkan data di tengah berdasarkan index
+    def insert_mid(self, new_data, index):
+        if self.size == 0 or index <= 0:
+            self.insert_head(new_data)
+        elif index >= self.size:
+            self.insert_tail(new_data)
+        else:
+            node_baru = Node(new_data)
+            helper = self.head
+            for i in range(index - 1):
+                helper = helper.next
+            node_baru.next = helper.next
+            helper.next = node_baru
+            self.size += 1
+
+    # Method untuk menghapus node di head
+    def delete_head(self):
+        if self.size == 0:
+            return None
+        elif self.size == 1:
+            deleted_node = self.head
+            self.head = None
+            self.tail = None
+        else:
+            deleted_node = self.head
+            self.head = self.head.next
+        self.size -= 1
+        return deleted_node
+    
+    # Method untuk menghapus node di tail
+    def delete_tail(self):
+        if self.size == 0:
+            return None
+        elif self.size == 1:
+            deleted_node = self.head
+            self.head = None
+            self.tail = None
+        else:
+            helper = self.head
+            while helper.next != self.tail:
+                helper = helper.next
+            deleted_node = self.tail
+            self.tail = helper
+            self.tail.next = None
+        self.size -= 1
+        return deleted_node
+
+    # Method untuk menghapus node di tengah berdasarkan index
+    def delete_mid(self, index):
+        if self.size == 0 or index <= 0:
+            return self.delete_head()
+        elif index >= self.size - 1:
+            return self.delete_tail()
+        else:
+            helper = self.head
+            for i in range(index - 1):
+                helper = helper.next
+            deleted_node = helper.next
+            helper.next = deleted_node.next
+            self.size -= 1
+            return deleted_node
+
+    # Method untuk mengambil data berdasarkan index
+    def getData(self, index):
+        if index < 0 or index >= self.size:
+            return None  # index di luar batas
+        helper = self.head
+        for i in range(index):
+            helper = helper.next
+        return helper.data
+
+    # Method untuk menghapus duplikasi di linked list
+    def hapusDuplikasi(self):
+        if self.size == 0:
+            return
+        data_dic = {}
+        current = self.head
+        prev = None
+        while current is not None:
+            if current.data in data_dic:
+                # Jika data sudah ada, hapus node
+                prev.next = current.next
+                if current == self.tail:
+                    self.tail = prev
+                self.size -= 1
+            else:
+                data_dic[current.data] = True
+                prev = current
+            current = current.next
+
+if __name__ == "__main__":
+    ll = SLNC()
+    for i in [1, 1, 1, 1, 1, 2, 3, 4, 2, 2, 2, 5, 6]:
+        ll.insert_tail(i)
+    
+    # Menampilkan semua data sebelum hapus duplikasi
+    ll.writeAllData()
+    
+    # Menghapus duplikasi
+    ll.hapusDuplikasi()
+    
+    # Menampilkan semua data setelah hapus duplikasi
+    ll.writeAllData()
+    
+    # Mengambil data pada index 2
+    print(f"Data pada index 2: {ll.getData(2)}")
