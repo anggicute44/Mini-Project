@@ -1,0 +1,108 @@
+class ArrayStack:
+    def __init__(self):
+        self._data = []  # Inisialisasi stack kosong
+
+    def __len__(self):
+        return len(self._data)  # Mengembalikan jumlah elemen dalam stack
+
+    def is_empty(self):
+        return len(self._data) == 0  # Mengecek apakah stack kosong
+
+    def push(self, e):
+        self._data.append(e)  # Menambahkan elemen di akhir list (atas stack)
+
+    def top(self):
+        if self.is_empty():
+            return "Empty!"
+        return self._data[-1]  # Mengambil elemen terakhir (teratas)
+
+    def pop(self):
+        if self.is_empty():
+            return "Empty!"
+        return self._data.pop()  # Menghapus elemen terakhir (teratas)
+
+    def printAll(self):
+        if self.is_empty():
+            return "Empty!"
+        return " ".join(self._data)  # Menampilkan semua elemen stack
+
+--
+# Membuat objek stack
+stack = ArrayStack()
+
+# Menambahkan elemen ke stack
+stack.push("5")
+stack.push("6")
+stack.push("7")
+
+# Menampilkan semua elemen dalam stack
+print(stack.printAll())  # Output: 5 6 7
+
+# Menghapus elemen teratas dari stack
+stack.pop()
+
+# Mengecek apakah stack kosong
+print(stack.is_empty())  # Output: False
+#############################################
+class Node:
+    def __init__(self, element, next_node=None):
+        self._element = element  # Data yang disimpan dalam node
+        self._next = next_node   # Pointer ke node berikutnya
+
+
+class Stack:
+    def __init__(self):
+        self._head = None  # Head menunjuk ke elemen teratas
+        self._size = 0  # Menyimpan ukuran stack
+
+    def __len__(self):
+        return self._size  # Mengembalikan ukuran stack
+
+    def is_empty(self):
+        return self._size == 0  # Mengecek apakah stack kosong
+
+    def push(self, e):
+        new_node = Node(e, self._head)  # Menambahkan node di depan (atas stack)
+        self._head = new_node  # Head menunjuk ke node baru
+        self._size += 1  # Ukuran stack bertambah
+
+    def top(self):
+        if self.is_empty():
+            return "Stack kosong!"
+        return self._head._element  # Mengambil elemen di head
+
+    def pop(self):
+        if self.is_empty():
+            return "Stack kosong!"
+        result = self._head._element  # Menyimpan elemen yang akan dihapus
+        self._head = self._head._next  # Head berpindah ke elemen berikutnya
+        self._size -= 1  # Ukuran stack berkurang
+        return result  # Mengembalikan elemen yang dihapus
+
+    def printAll(self):
+        if self.is_empty():
+            print("Stack kosong!")
+        else:
+            current = self._head
+            while current is not None:
+                print(current._element, end=" ")
+                current = current._next
+            print()  # Baris baru
+
+
+# Membuat objek stack
+mystack = Stack()
+
+# Menambahkan elemen ke stack
+mystack.push("3")
+mystack.push("2")
+mystack.push("1")
+
+# Menampilkan semua elemen dalam stack
+mystack.printAll()  # Output: 1 2 3
+
+# Menghapus elemen teratas dari stack
+mystack.pop()
+
+# Menampilkan stack setelah pop
+mystack.printAll()  # Output: 2 3
