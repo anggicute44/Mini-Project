@@ -1,0 +1,22 @@
+from collections import deque
+
+def reverse_queue(queue):
+    stack = []
+    
+    # Pindahkan elemen dari queue ke stack
+    while queue:
+        stack.append(queue.popleft())
+    
+    # Pindahkan elemen kembali dari stack ke queue (urutan terbalik)
+    while stack:
+        queue.append(stack.pop())
+    
+    return queue
+
+# Contoh penggunaan
+queue = deque(['A', 'B', 'C'])
+print("Queue sebelum dibalik:", list(queue))
+
+# Membalik queue
+reversed_queue = reverse_queue(queue)
+print("Queue setelah dibalik:", list(reversed_queue))
