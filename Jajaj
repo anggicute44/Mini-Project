@@ -1,0 +1,77 @@
+Anda telah memulai implementasi kelas Resto. Sekarang, mari kita lengkapi metode change_priority, remove_highest_priority, dan remove_with_priority untuk menangani semua fungsionalitas yang diminta:
+
+class Resto:
+    def __init__(self):
+        self.data = []
+
+    def is_empty(self):
+        return len(self.data) == 0
+
+    def add(self, item, priority):
+        self.data.append((priority, item))
+        self.data.sort()  # Urutkan berdasarkan prioritas (ascending)
+
+    # Mengubah prioritas item tertentu
+    def change_priority(self, item, new_priority):
+        for i, (priority, current_item) in enumerate(self.data):
+            if current_item == item:
+                # Hapus item lama dan tambahkan dengan prioritas baru
+                self.data.pop(i)
+                self.data.append((new_priority, item))
+                self.data.sort()  # Urutkan ulang berdasarkan prioritas
+                break
+
+    # Menghapus item dengan prioritas tertinggi
+    def remove_highest_priority(self):
+        if not self.is_empty():
+            self.data.pop(0)  # Menghapus item pertama (prioritas tertinggi)
+
+    # Menghapus item dengan prioritas tertentu
+    def remove_with_priority(self, priority):
+        for i, (current_priority, item) in enumerate(self.data):
+            if current_priority == priority:
+                self.data.pop(i)
+                break
+
+    # Menampilkan semua item dalam antrian
+    def display(self):
+        for priority, item in self.data:
+            print(f"Priority: {priority}, Item: {item}")
+
+# TEST CASE
+antrian = Resto()
+
+antrian.add("Pesan Pizza", 2)
+antrian.add("Pesan Ayam Goreng", 1)
+antrian.add("Pesan Burger", 3)
+
+print("Isi awal Pesanan:")
+antrian.display()
+
+print("\nPesanan Ayam Goreng diminta cepat!!!")
+antrian.change_priority("Pesan Ayam Goreng", 4)
+antrian.display()
+
+print("\n##### PESANAN PERTAMA SELESAI #####\n")
+antrian.remove_highest_priority()
+print("Sisa pesanan: ")
+antrian.display()
+
+print("\nPesanan dengan prioritas ini telah selesai")
+antrian.remove_with_priority(2)
+antrian.display()
+
+Penjelasan:
+
+1. change_priority: Metode ini mencari item yang dimaksud, menghapusnya dari antrian, dan menambahkannya kembali dengan prioritas baru. Setelah itu, data diurutkan kembali.
+
+
+2. remove_highest_priority: Menghapus item dengan prioritas tertinggi (item pertama dalam daftar karena daftar diurutkan secara ascending).
+
+
+3. remove_with_priority: Mencari item berdasarkan prioritas tertentu dan menghapusnya dari antrian.
+
+
+
+Program ini menggunakan daftar terurut untuk menyimpan dan mengelola item berdasarkan prioritas. Jika Anda ingin meningkatkan efisiensi, Anda dapat mempertimbangkan struktur data yang lebih kompleks seperti heap.
+
