@@ -1,0 +1,213 @@
+OPERATOR
+1.a. Tampilkan mahasiswa perempuan yang berasal dari Yogyakarta.
+
+-SELECT * FROM mahasiswa WHERE sex = 'F' AND alamat LIKE '%Yogyakarta%';
+
+-SELECT CONCAT(nama_depan, ' ', nama_belakang) AS nama_lengkap, alamat 
+FROM mahasiswa 
+WHERE sex = 'F' AND alamat LIKE '%Yogyakarta%';
+
+b. Tampilkan mahasiswa yang memiliki IPK antara 3.00 hingga 3.50.
+
+-SELECT * FROM mahasiswa WHERE ipk BETWEEN 3.00 AND 3.50;
+
+
+c. Tampilkan mahasiswa yang sudah menyelesaikan SKS lebih dari atau sama
+dengan 70.
+
+-SELECT * FROM mahasiswa WHERE sks >= 70;
+
+d. Tampilkan mahasiswa yang memiliki nama depannya diawali “Mi..” atau nama
+belakangnya berakhiran “..ya”.
+
+-SELECT * FROM mahasiswa WHERE nama_depan LIKE 'Mi%' OR nama_belakang LIKE '%ya';
+
+e. Tampilkan NIM, nama depan dan jumlah SKS yang harus ditempuh untuk lulus
+(mencapai 144 SKS), diurutkan dari yang paling mendekati kelulusan.
+
+-
+SELECT nim, nama_depan, (144 - sks) AS sisa_sks
+FROM mahasiswa
+ORDER BY sisa_sks ASC;
+-----------------------------------------------------------------------------------------------
+
+2. String Functions
+a. Tampikan NIM dan gabungan nama depan dan nama belakang sebagai nama
+lengkap dari mahasiswa diurutkan NIM.
+
+SELECT nim, CONCAT(nama_depan, ' ', nama_belakang) AS nama_lengkap
+FROM mahasiswa
+ORDER BY nim;
+
+
+b. Tambahkan data email di column email dengan ketentuan “nama depan” + “.” +
+“nama belakang”+”@gmail.ac.id” , contoh : andika.rangga@gmail.ac.id. Semua
+lowercase.
+
+UPDATE mahasiswa
+SET email = LOWER(CONCAT(nama_depan, '.', nama_belakang, '@gmail.ac.id'));
+
+c. Ubahlah data email dengan mengganti kata “gmail” menjadi “ukdw” , contoh :
+andika.rangga@ukdw.ac.id.
+
+UPDATE mahasiswa
+SET email = REPLACE(email, 'gmail', 'ukdw');
+
+d. Tampilkan mahasiswa yang merupakan mahasiswa prodi SI (72...), dengan
+menggunakan column NIM tanpa menggunakan wildcard % maupun _.
+
+SELECT * FROM mahasiswa WHERE LEFT(nim, 2) = '72';
+
+
+e. Tampilkan mahasiswa yang merupakan mahasiswa angkatan 2017 dengan
+menggunakan column NIM tanpa menggunakan wildcard % maupun _.
+
+SELECT * FROM mahasiswa WHERE MID(nim, 3, 2) = '17';
+
+f. TampilkanNIM dan hanya nama kabupaten/kota saja dari kolom alamat.
+
+SELECT nim, SUBSTRING_INDEX(alamat, ',', -1) AS kota
+FROM mahasiswa;
+----------------------------------------------------------------------------------------------------------
+
+
+Latihan:
+a. Tampilkan mahasiswa yang lahir sebelum tahun 2000.
+
+SELECT * FROM mahasiswa WHERE YEAR(tgl_lahir) < 2000;
+
+
+b. TampilkanNIM, nama lengkap, tanggal lahir dengan format Sun, 6 October 1999.
+
+SELECT nim, CONCAT(nama_depan, ' ', nama_belakang) AS nama_lengkap,
+       DATE_FORMAT(tgl_lahir, '%a, %e %M %Y') AS tanggal_lahir
+FROM mahasiswa;
+
+
+c. Tampilkan mahasiswa yang lahir di bulan ini (gunakan NOW() atau yang
+ekuivalen).
+
+SELECT * FROM mahasiswa WHERE MONTH(tgl_lahir) = MONTH(NOW());
+
+d. Tampilkan data mahasiswa yang lahir di hari Senin.
+
+
+SELECT * FROM mahasiswa WHERE DAYOFWEEK(tgl_lahir) = 2;
+
+e. TampilkanNIM, nama_depan, nama_belakang, serta usia setiap mahasiswa.
+SELECT nim, nama_depan, nama_belakang,
+       TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia
+FROM mahasiswa;
+-----------------------------------------------------------
+Latihan:
+a. Ambil nilai terbesar dari NIM dari prodi Informatika, lalu lakukan increment nilai
+tersebut sebanyak 1 untuk menciptakan NIM mahasiswa yang baru saja
+mendaftar.
+
+SELECT MAX(CAST(nim AS UNSIGNED)) + 1 AS nim_baru
+FROM mahasiswa WHERE LEFT(nim, 2) = '71';
+--------------------------------------------------------------
+Latihan:
+a. Tampilkan NIM , nama lengkap, dan prodi. Jika dia memiliki NIM berawalkan “71”
+maka prodinya “Informatika” , jika NIM berawalkan “72” maka prodinya “Sistem
+Informasi”.
+
+SELECT nim, CONCAT(nama_depan, ' ', nama_belakang) AS nama_lengkap,
+       CASE WHEN LEFT(nim, 2) = '71' THEN 'Informatika'
+            WHEN LEFT(nim, 2) = '72' THEN 'Sistem Informasi'
+       END AS prodi
+FROM mahasiswa;
+
+b. Periksalah apakah nama depan dari mahasiswa dengan NIM 72180351 dengan
+71180390 sama, jika benar munculkan pesan “Nama depan sama”, jika beda
+“Nama depan berbeda”.
+
+SELECT IF((SELECT nama_depan FROM mahasiswa WHERE nim = '72180351') =
+          (SELECT nama_depan FROM mahasiswa WHERE nim = '71180390'),
+          'Nama depan sama', 'Nama depan berbeda') AS hasil_perbandingan;
+
+
+c. Tampilkan data NIM, nama depan, nama belakang, dan nomor telephone, tapi jika
+nomor telepon NULL gantilah dengan kata-kata “No Telephone Tidak Tersedia”
+
+SELECT nim, nama_depan, nama_belakang,
+       IFNULL(no_telp, 'No Telephone Tidak Tersedia') AS no_telp
+FROM mahasiswa;
+----------------------------------------------------------------------------
+
+1.Tampilkan nama restoran beserta TanggalBuka restoran yang asli dan tampilkan TanggalBuka yang menggunakan format: Hari, Tanggal / Bulan / Tahun
+
+SELECT namarestoran, TanggalBuka, DATE_FORMAT(TanggalBuka, '%W, %e/%m/%Y') AS TanggalBukaFormated FROM restoran;
+
+2.Tampilkan semua nama menu, kategori, beserta TanggalPenjualan yang asli dan tampilkan TanggalPenjualan, BulanPenjualan, tahunPenjualan secara terpisah, kemudian urutkan DESC berdasarkan tanggal.           
+
+
+SELECT namamenu,
+       kategori,
+       TanggalPenjualan,
+       DATE_FORMAT(TanggalPenjualan, '%d') AS TanggalPenjualan,
+       DATE_FORMAT(TanggalPenjualan, '%m') AS BulanPenjualan,
+       DATE_FORMAT(TanggalPenjualan, '%Y') AS TahunPenjualan
+FROM menu
+ORDER BY TanggalPenjualan DESC;
+
+3.Tampilkan semua nama restoran (beserta nama chefnya), dan deskripsi restoran dengan format kalimatnya terbalik dan huruf besar semua. Urutkan sesuai tanggalBuka restoran nya. 
+
+
+SELECT 
+  namaRestoran,
+  namaChef,
+  UPPER(REVERSE(deskripsi)) AS Deskripsi_Balik
+FROM restoran
+JOIN chef ON restoran.idChef = chef.idChef
+ORDER BY tanggalBuka;
+
+
+4.Tampilkan “SELECT” semua nama restoran, nama menu pada “Restoran Sederhana” dan ubahlah kategori menu dengan ketentuan jenis “Makanan Utama” diganti menjadi “Main-Course” dan “Minuman” diganti menjadi “Beverages”. Dilarang mengganti secara manual dan harus mengganti dengan menggunakan operator dan fungsi SQL. *Gunakanlah Case when (0.5 poin)
+
+SELECT 
+  restoran.namaRestoran,
+  menu.namaMenu,
+  menu.kategori AS kategoriLama,
+  CASE 
+    WHEN menu.kategori = 'Makanan Utama' THEN 'Main-Course'
+    WHEN menu.kategori = 'Minuman' THEN 'Beverages'
+    ELSE menu.kategori
+  END AS kategoriBaru
+FROM restoran
+JOIN menu ON restoran.idRestoran = menu.idRestoran
+WHERE restoran.namaRestoran = 'Restoran Sederhana';
+
+5.. Tampilkan nama restoran, inisial nama chef restoran, nama menu,  harga menu pada restoran “Dapur Enak” dan tambahkan kolom Validasi yang berisi : Jika harga dari menu restoran  adalah kurang dari 30.000 maka akan menampilkan “menu terjangkau”. Selain dari itu, akan menampilkan “mantap lurrr :)”. (0.75 poin) **gunakan if atau case when untuk validasi
+dari query yang anda buat tersebut
+**simpanlah pada sebuah view dengan nama lihatharga lalu tampilkan view tersebut (0.25 poin)
+
+
+-- Membuat View
+CREATE VIEW lihatharga AS
+SELECT 
+  restoran.namaRestoran,
+  CONCAT(LEFT(chef.namaChef, 1), '.') AS InisialChef,
+  menu.namaMenu,
+  menu.harga,
+  CASE 
+    WHEN menu.harga < 30000 THEN 'menu terjangkau'
+    ELSE 'mantap lurrr :)'
+  END AS Validasi
+FROM restoran
+JOIN chef ON restoran.idChef = chef.idChef
+JOIN menu ON restoran.idRestoran = menu.idRestoran
+WHERE restoran.namaRestoran = 'Dapur Enak';
+
+-- Menampilkan View
+SELECT * FROM lihatharga;
+
+
+
+
+
+
+
+
+
+
