@@ -1,0 +1,83 @@
+class PriorityQueueSorted:
+    def __init__(self):
+        self.queue = []
+    
+    def is_empty(self):
+        return len(self.queue) == 0
+    
+    def __len__(self):
+        return len(self.queue)
+    
+    def remove(self):
+        if not self.is_empty():
+            return self.queue.pop(0)  # Menghapus elemen pertama
+        else:
+            print("Queue kosong, tidak ada data untuk dihapus.")
+    
+    def peek(self):
+        if not self.is_empty():
+            print(f"Elemen paling depan: {self.queue[0]}")
+            return self.queue[0]
+        else:
+            print("Queue kosong.")
+    
+    def add(self, name, priority):
+        # Tambahkan elemen baru ke dalam queue
+        self.queue.append((name, priority))
+        # Urutkan queue berdasarkan prioritas menggunakan Merge Sort
+        self.queue = self.merge_sort(self.queue)
+    
+    def merge_sort(self, arr):
+        # Fungsi rekursif Merge Sort
+        if len(arr) <= 1:
+            return arr
+        mid = len(arr) // 2
+        left = self.merge_sort(arr[:mid])
+        right = self.merge_sort(arr[mid:])
+        return self.merge(left, right)
+    
+    def merge(self, left, right):
+        # Menggabungkan dua array yang telah terurut
+        result = []
+        i = j = 0
+        while i < len(left) and j < len(right):
+            # Urut dari prioritas terbesar ke terkecil
+            if left[i][1] > right[j][1]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+        result.extend(left[i:])
+        result.extend(right[j:])
+        return result
+    
+    def print_all(self):
+        if not self.is_empty():
+            print("Isi Queue (dari prioritas terbesar ke terkecil):")
+            for name, priority in self.queue:
+                print(f"{name} - Priority: {priority}")
+        else:
+            print("Queue kosong.")
+
+# TEST CASE
+myQueue = PriorityQueueSorted()
+
+myQueue.add('Gian', 2)
+myQueue.add('Kezia', 8)
+myQueue.print_all()  # Output: Kezia - Priority: 8, Gian - Priority: 2
+
+myQueue.peek()  # Output: Kezia - Priority: 8
+
+myQueue.add('Glen', 5)
+myQueue.add('Christo', 9)
+myQueue.print_all()  # Output: Christo - Priority: 9, Kezia - Priority: 8, Glen - Priority: 5, Gian - Priority: 2
+
+myQueue.peek()  # Output: Christo - Priority: 9
+
+print("========REMOVE========")
+myQueue.remove()
+myQueue.print_all()  # Output: Kezia - Priority: 8, Glen - Priority: 5, Gian - Priority: 2
+
+myQueue.remove()
+myQueue.print_all()  # Output: Glen - Priority
