@@ -1,0 +1,193 @@
+Bagian A:
+1. Impor file prak_sbd_11_himp.sql di sini. Kemudian tampilkan seluruh mahasiswa baik
+yang PJJ maupun yang reguler. Data kembar cukup ditampilkan satu kali saja.
+
+
+SELECT nama
+FROM mahasiswa
+UNION
+SELECT nama
+FROM mahasiswapjj;
+
+
+
+2. Tampilkan nama mahasiswa baik yang PJJ maupun yang reguler. Urutkan berdasarkan URUTAN NYA YAITU: amadeus,angela ,cahyano,erika,joshua,kevin,michael,patricia,amadeus,elisabeth,erika,joshua,lucas 
+nama namun tidak menggunakan klausa ORDER BY.
+
+jawab:
+
+SELECT nama
+FROM mahasiswa
+WHERE nama IN ('Amadeus', 'Angela', 'Cahyono', 'Erika', 'Joshua', 'Kevin', 'Michael', 'Patricia')
+UNION ALL
+SELECT nama
+FROM mahasiswapjj
+WHERE nama IN ('Amadeus', 'Elisabeth', 'Erika', 'Joshua', 'Lucas');
+
+
+
+
+
+3. Tampilkan mahasiswa hanya mahasiswa yang merangkap PJJ dan reguler. Mahasiswa
+yang PJJ saja atau reguler saja tidak ditampilkan.
+
+
+
+SELECT m.nama
+FROM mahasiswa m
+INNER JOIN mahasiswapjj pjj ON m.nim = pjj.nim;
+
+4. Tampilkan mahasiswa PJJ yang tidak merangkap reguler.
+
+SELECT pjj.nama
+FROM mahasiswapjj pjj
+LEFT JOIN mahasiswa m ON pjj.nim = m.nim
+WHERE m.nim IS NULL;
+
+5. Tampilkan mahasiswa reguler yang tidak merangkap PJJ.
+
+SELECT m.nama
+FROM mahasiswa m
+LEFT JOIN mahasiswapjj pjj ON m.nim = pjj.nim
+WHERE pjj.nim IS NULL;
+
+
+bagian B
+
+1. Tampilkan data karyawan yang memiliki departemen yang sama dengan Emil.
+
+-SELECT * 
+FROM karyawan 
+WHERE id_departemen = (SELECT id_departemen FROM karyawan WHERE nama_depan = 'Emil');
+
+-SELECT * 
+FROM karyawan 
+WHERE id_departemen = (
+    SELECT MAX(id_departemen) 
+    FROM karyawan 
+    WHERE nama_depan = 'Emil'
+);
+
+
+
+
+
+2. Tampilkan nama depan karyawan yang memiliki gaji lebih besar daripada Rino Cheros.
+
+-SELECT nama_depan 
+FROM karyawan 
+WHERE gaji > (
+    SELECT MAX(gaji) 
+    FROM karyawan 
+    WHERE nama_depan = 'Rino' AND nama_belakang = 'Cheros'
+);
+
+-menapampilkan gaji juga
+SELECT nama_depan, gaji
+FROM karyawan 
+WHERE gaji > (
+    SELECT MAX(gaji) 
+    FROM karyawan 
+    WHERE nama_depan = 'Rino' AND nama_belakang = 'Cheros'
+);
+
+
+3. Tampilkan data karyawan yang memiliki gaji di bawah gaji rata-rata karyawan.
+
+SELECT * 
+FROM karyawan 
+WHERE gaji < (SELECT AVG(gaji) FROM karyawan);
+
+
+4. Tampilkan data karyawan yang bekerja pada departemen Finance atau pada Region 2.
+
+SELECT k.*, d.nama_departemen
+FROM karyawan k
+JOIN departemen d ON k.id_departemen = d.id_departemen
+WHERE d.nama_departemen = 'Finance' OR d.region = 2;
+--
+SELECT k.*, d.nama_departemen, d.region
+FROM karyawan k
+JOIN departemen d ON k.id_departemen = d.id_departemen
+WHERE d.nama_departemen = 'Finance' OR d.region = 2;
+
+
+5. Tampilkan nama departemen yang karyawannya memiliki gaji di atas 3,5 juta.
+
+SELECT k.nama_depan, k.nama_belakang, k.gaji, d.nama_departemen
+FROM karyawan k
+JOIN departemen d ON k.id_departemen = d.id_departemen
+WHERE k.gaji > 3500000;
+
+
+6. Tampilkan karyawan yang tidak bekerja di departemen Region 1.
+
+SELECT k.*, d.region
+FROM karyawan k
+JOIN departemen d ON k.id_departemen = d.id_departemen
+WHERE d.region <> 1;
+
+
+7. Tampilkan karyawan yang gajinya lebih rendah daripada semua karyawan yang bekerja
+di departemen Finance.
+
+
+SELECT * 
+FROM karyawan 
+WHERE gaji < (
+    SELECT MIN(gaji) 
+    FROM karyawan 
+    WHERE id_departemen = (
+        SELECT id_departemen 
+        FROM departemen 
+        WHERE nama_departemen = 'Finance'
+    )
+);
+
+
+
+
+
+--======================================================---
+
+
+1.	Tampilkan nama kendaraan dari merk Toyota dan Honda dalam satu hasil. Gunakan fungsi HIMPUNAN ATAU Gabungan SUBQUERY dan HIMPUNAN (clue: subquery + union + subquery) (WAJIB TANPA JOIN) (1 poin) 
+Sesuaikan dengan tampilan seperti pada tabel di bawah.
+
+-- Menampilkan nama kendaraan dari merk Toyota dan Honda tanpa JOIN, menggunakan UNION
+SELECT nama_kendaraan
+FROM kendaraan
+WHERE id_merk = (SELECT id_merk FROM merk WHERE nama_merk = 'Toyota')
+UNION
+SELECT nama_kendaraan
+FROM kendaraan
+WHERE id_merk = (SELECT id_merk FROM merk WHERE nama_merk = 'Honda');
+
+
+
+
+
+2.2.	Tampilkan nama pemilik yang memiliki kendaraan berjenis ‘Sport’. WAJIB MENGGUNAKAN SUBQUERY 
+
+
+
+SELECT nama_pemilik
+FROM pemilik
+WHERE id_pemilik IN (
+    SELECT id_pemilik
+    FROM kendaraan
+    WHERE jenis = 'Sport'
+);
+
+3.Tampilkan nama pemilik yang memiliki kendaraan dengan total pajak dan biaya service kurang dari atau sama dengan 10.000.000. WAJIB MENGGUNAKAN SUBQUERY
+
+
+SELECT 
+    p.nama_pemilik
+FROM 
+    id_pemilik p
+INNER JOIN id_kendaraan k ON p.id_pemilik = k.id_pemilik
+INNER JOIN id_merk m ON k.id_merk = m.id_merk
+WHERE 
+    (m.pajak + m.biaya_service) <= 10000000;
+
