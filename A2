@@ -1,0 +1,34 @@
+1.DELIMITER $$
+CREATE TRIGGER auto_stock
+AFTER INSERT ON catatan_penjualan
+FOR EACH ROW
+BEGIN
+    UPDATE barang
+    SET stok = stok - NEW.jumlah
+    WHERE id_barang = NEW.id_barang;
+END$$
+DELIMITER ;
+
+2.DELIMITER $$
+CREATE TRIGGER cek_stok
+BEFORE INSERT ON catatan_penjualan
+FOR EACH ROW
+BEGIN
+    DECLARE current_stok INT;
+
+    -- Ambil stok barang yang akan dijual
+    SELECT stok INTO current_stok
+    FROM barang
+    WHERE id_barang = NEW.id_barang;
+
+    -- Periksa apakah stok mencukupi
+    IF current_stok < NEW.jumlah THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Stok barang tidak mencukupi, DW MANIA sudah memborong semua!';
+    END IF;
+END$$
+DELIMITER ;
+
+-- cek no2
+INSERT INTO catatan_penjualan (id_penjualan, id_pembeli, id_barang, jumlah, total_harga, tanggal_penjualan)
+VALUES (10, 1, 1, 50, 7500000, '2024-11-18 11:00:00');
