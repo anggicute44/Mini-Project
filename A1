@@ -1,0 +1,143 @@
+1. CREATE TABLE buku (
+    kode_buku VARCHAR(10) PRIMARY KEY,
+    judul_buku VARCHAR(100) NOT NULL,
+    pengarang VARCHAR(100) NOT NULL,
+    posisi_buku VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE log_pindah_buku (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    kode_buku VARCHAR(10),
+    posisi_lama VARCHAR(10),
+    posisi_baru VARCHAR(10),
+    waktu_perubahan DATETIME,
+    FOREIGN KEY (kode_buku) REFERENCES buku(kode_buku)
+);
+
+
+2. DELIMITER $$
+
+CREATE TRIGGER after_buku_insert
+AFTER INSERT ON buku
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_pindah_buku (kode_buku, posisi_lama, posisi_baru, waktu_perubahan)
+VALUES (NEW.kode_buku, NEW.posisi_buku, NEW.posisi_buku, NOW());
+END$$
+
+DELIMITER ;
+
+
+
+3. DELIMITER $$
+
+CREATE TRIGGER after_buku_update
+AFTER UPDATE ON buku
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_pindah_buku (kode_buku, posisi_lama, posisi_baru, waktu_perubahan)
+    VALUES (NEW.kode_buku, OLD.posisi_buku, NEW.posisi_buku, NOW());
+END$$
+
+DELIMITER ;
+
+
+
+4. INSERT INTO buku (kode_buku, judul_buku, pengarang, posisi_buku)
+VALUES ('RE112', 'The Fault in Our Stars', 'John Green', 'R-02');
+
+
+SELECT * FROM log_pindah_buku;
+5. UPDATE buku
+SET posisi_buku = 'R-33'
+WHERE kode_buku = 'RE112';
+
+
+SELECT * FROM log_pindah_buku;
+
+
+
+6. DELIMITER $$
+
+CREATE TRIGGER before_buku_insert
+BEFORE INSERT ON buku
+FOR EACH ROW
+BEGIN
+    DECLARE digit_angka INT;
+    SET digit_angka = CAST(SUBSTRING_INDEX(NEW.posisi_buku, '-', -1) AS UNSIGNED);
+    
+    IF digit_angka = 0 THEN
+        SET NEW.posisi_buku = CONCAT(SUBSTRING_INDEX(NEW.posisi_buku, '-', 1), '-01');
+    ELSEIF digit_angka > 50 THEN
+        SET NEW.posisi_buku = CONCAT(SUBSTRING_INDEX(NEW.posisi_buku, '-', 1), '-50');
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+
+7. INSERT INTO buku (kode_buku, judul_buku, pengarang, posisi_buku)
+VALUES 
+('UM228', 'Divergent', 'Veronica Roth', 'U-00'),
+('RE112', 'Insurgent', 'Veronica Roth', 'M-77');
+
+SELECT * FROM buku;
+
+
+
+
+CREATE TABLE summary (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    total_buku INT DEFAULT 0
+);
+
+-- Membuat trigger untuk menghitung jumlah total buku
+DELIMITER $$
+CREATE TRIGGER after_buku_insert_count
+AFTER INSERT ON buku
+FOR EACH ROW
+BEGIN
+    UPDATE summary
+    SET total_buku = total_buku + 1;
+END$$
+DELIMITER ;
+
+
+
+CREATE TABLE log_hapus_buku (
+    id_log INT AUTO_INCREMENT PRIMARY KEY,
+    kode_buku VARCHAR(10),
+    judul_buku VARCHAR(100),
+    pengarang VARCHAR(100),
+    waktu_hapus DATETIME
+);
+
+-- Membuat trigger untuk mencatat buku yang dihapus
+DELIMITER $$
+CREATE TRIGGER after_buku_delete
+AFTER DELETE ON buku
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_hapus_buku (kode_buku, judul_buku, pengarang, waktu_hapus)
+    VALUES (OLD.kode_buku, OLD.judul_buku, OLD.pengarang, NOW());
+END$$
+DELIMITER ;
+
+
+10. DELIMITER $$
+CREATE TRIGGER before_buku_insert_check
+BEFORE INSERT ON buku
+FOR EACH ROW
+BEGIN
+    DECLARE count_buku INT;
+    SELECT COUNT(*) INTO count_buku
+    FROM buku
+    WHERE kode_buku = NEW.kode_buku;
+
+    IF count_buku > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Kode buku sudah ada dalam tabel!';
+    END IF;
+END$$
+DELIMITER
