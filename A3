@@ -1,0 +1,7 @@
+2.	Buatlah sebuah trigger  yang bernama cek_stok untuk mengecek apakah stok tersebut cukup atau tidak jika barang tersebut ingin dijual. jika stok tersebut tidak cukup maka akan mengeluarkan error seperti dibawah.
+ 
+ini adalah Query untuk mengecekanya : “INSERT INTO catatan_penjualan (id_penjualan, id_pembeli, id_barang, jumlah, total_harga, tanggal_penjualan)
+VALUES (10, 1, 1, 50, 7500000, '2024-11-18 11:00:00');”
+
+Note : SIGNAL SQLSTATE '45000' -> menggunakan query ini untuk menampilkan error DAN DIWAJIBKAN UNTUK SS SQL TRIGGER PADA TRIGGER
+(1,5 poin)
