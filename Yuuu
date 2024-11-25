@@ -1,0 +1,63 @@
+def plus_minus(node):
+    """
+    Fungsi ini menghitung hasil penjumlahan dan pengurangan semua node.
+    Jika nilai node genap, tambahkan, jika ganjil, kurangkan.
+    """
+    result = 0
+    stack = [node]  # Gunakan stack untuk traversal tree
+
+    while stack:
+        current = stack.pop()
+        if current.data % 2 == 0:  # Jika genap, tambahkan
+            result += current.data
+        else:  # Jika ganjil, kurangkan
+            result -= current.data
+
+        # Tambahkan semua children ke stack
+        for child in current.children:
+            stack.append(child)
+
+    return result
+
+
+def find_deepest_leaf(node):
+    """
+    Fungsi ini mengembalikan kedalaman leaf paling dalam.
+    Menggunakan traversal BFS untuk menemukan leaf dengan kedalaman maksimal.
+    """
+    max_depth = 0
+    queue = [(node, 0)]  # Pasangkan node dengan kedalamannya
+
+    while queue:
+        current, depth = queue.pop(0)  # Ambil node dan kedalamannya
+        if current.is_external():  # Jika leaf, update max_depth
+            max_depth = max(max_depth, depth)
+
+        # Tambahkan semua children ke antrian dengan kedalaman yang diperbarui
+        for child in current.children:
+            queue.append((child, depth + 1))
+
+    return max_depth
+
+
+def main():
+    root = generate_tree(840)
+    print(f"hasil plus minus = {plus_minus(root)}")
+    print(f"leaf paling dalam = {find_deepest_leaf(root)}")
+    print()
+    root = generate_tree(1200)
+    print(f"hasil plus minus = {plus_minus(root)}")
+    print(f"leaf paling dalam = {find_deepest_leaf(root)}")
+    print()
+    root = generate_tree(8440)
+    print(f"hasil plus minus = {plus_minus(root)}")
+    print(f"leaf paling dalam = {find_deepest_leaf(root)}")
+    print()
+    root = generate_tree(53)
+    print(f"hasil plus minus = {plus_minus(root)}")
+    print(f"leaf paling dalam = {find_deepest_leaf(root)}")
+    print()
+
+
+if __name__ == "__main__":
+    main()
