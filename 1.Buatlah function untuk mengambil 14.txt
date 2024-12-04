@@ -1,0 +1,172 @@
+1.Buatlah function untuk mengambil nama lengkap pegawai/employee yang menjadi Sales
+Representative untuk customer tertentu. Inputnya adalah customerNumber. Outputnya
+nama lengkap Sales Representativenya.
+
+CREATE FUNCTION getSalesRepName(customerNumber INT)
+RETURNS VARCHAR(100)
+DETERMINISTIC
+BEGIN
+    DECLARE salesRepName VARCHAR(100);
+    SELECT CONCAT(e.firstName, ' ', e.lastName) INTO salesRepName
+    FROM customers c
+    JOIN employees e ON c.salesRepEmployeeNumber = e.employeeNumber
+    WHERE c.customerNumber = customerNumber;
+    RETURN salesRepName;
+END $$
+
+DELIMITER ;
+
+-- Contoh penggunaan:
+SELECT getSalesRepName(103); 
+
+
+2. Dengan menggunakan stored function untuk menghitung rata-rata creditLimit, tampilkan
+customer yang credit limitnya di atas rata-rata. Tampilan SELECT customers diurutkan
+berdasarkan creditLimit dari yang terbesar hingga yang terkecil di atas rata-rata hasil
+perhitungan function.
+
+DELIMITER $$
+
+CREATE FUNCTION avgCreditLimit()
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE avg DECIMAL(10,2);
+    SELECT AVG(creditLimit) INTO avg FROM customers;
+    RETURN avg;
+END $$
+
+DELIMITER ;
+
+-- Contoh penggunaan:
+SELECT c.customerName, c.creditLimit
+FROM customers c
+WHERE c.creditLimit > avgCreditLimit()
+ORDER BY c.creditLimit DESC;
+
+=========================================
+1. Buatlah stored procedure dengan nama budgetMenu yang menampilkan jumlah stok
+menu berdasarkan idMenu yang dimasukkan. (1 poin)
+Tambahkan juga kolom status stok menu berdasarkan jumlah stok dengan ketentuan
+berikut:
+● Jika stok lebih dari 50 = Stok Aman
+● Jika stok antara 20 hingga 50 = Stok Cukup
+● Jika stok kurang dari 20 = Stok Habis
+Selain itu, tambahkan kolom status harga menu berdasarkan harga dengan ketentuan
+berikut:
+● Jika harga menu kurang dari 50000 = Budget Friendly
+● Jika harga menu antara 50000 hingga 100000 = Budget Oke
+● Jika harga menu lebih dari 100000 = Premium
+Catatan : *gunakanlah percabangan case when atau if else.
+*Setelah dibuat tes lah masukan data baru di tabel menu
+insert into menu values(null,"tempe goreng","Makanan",101000,1);
+*lalu memanggil stored procedure nya
+Test : CALL budgetMenu(1);
+Test : CALL budgetMenu(9);
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE budgetMenu (IN idmenu INT)
+BEGIN
+    SELECT 
+        idMenu,
+        nama,
+        kategori,
+        harga,
+        stok,
+        CASE 
+            WHEN stok > 50 THEN 'Stok Aman'
+            WHEN stok BETWEEN 20 AND 50 THEN 'Stok Cukup'
+            ELSE 'Stok Habis'
+        END AS status_stok,
+        CASE
+            WHEN harga < 50000 THEN 'Budget Friendly'
+            WHEN harga BETWEEN 50000 AND 100000 THEN 'Budget Oke'
+            ELSE 'Premium'
+        END AS status_harga
+    FROM menu
+    WHERE idMenu = idmenu;
+END$$
+
+DELIMITER ;
+
+INSERT INTO menu VALUES (NULL, 'tempe goreng', 'Makanan', 101000, 1);
+
+CALL budgetMenu(1);
+CALL budgetMenu(9);
+
+
+2.Buatlah stored procedure dengan nama totalPendapatan yang harus menampilkan
+total pendapatan restoran yang dihitung berdasarkan total_harga di entitas/tabel
+orders. Total pendapatan ditampilkan dengan format “Rp”. (lihat di contoh output) (1
+poin)
+Hint:
+● Gunakan CONCAT untuk format "Rp".
+● Gunakan format untuk merapikan angka hasilnya FORMAT(, 0)
+● Rumus: SUM(total_harga) dimana status_order nya selesai
+● Fokus lah pada tabel orders.
+Test :
+CALL totalPendapatan(@out);
+Contoh Output:
+
+DELIMITER $$
+
+CREATE PROCEDURE totalPendapatan (OUT totalPendapatan VARCHAR(50))
+BEGIN
+    SELECT 
+        CONCAT('Rp ', FORMAT(SUM(total_harga), 0)) AS total_pendapatan
+    INTO totalPendapatan
+    FROM orders
+    WHERE status_order = 'Selesai';
+END$$
+
+DELIMITER ;
+
+CALL totalPendapatan(@out);
+SELECT @out AS totalPendapatan;
+
+
+3.
+Masukan perintah ini untuk bisa kerjakan no 3 :
+alter table orders add column bonus varchar(80);
+Kemudian:
+Buatlah stored procedure dengan nama Bonus untuk update kolom bonus yang akan
+diperoleh customer pada kolom bonus di tabel orders. Jika status customer adalah
+'Gold', maka customer akan mendapatkan "Voucher Diskon 20%". Jika status
+customer adalah 'Silver', maka customer akan mendapatkan "Voucher Gratis
+Minuman", selain itu “Tidak mendapat apapun”.
+(1 poin)
+Hint:
+● Gunakan percabangan if else atau case when
+● Gunakan join (bisa natural atau inner), letaknya di updatenya
+● Fokus pada tabel orders, lalu di join ya, tentukan sendiri di join dengan tabel apa
+● Join hanya 1x
+Test :
+CALL Bonus(@out);
+select * from orders
+
+
+DELIMITER $$
+
+CREATE PROCEDURE Bonus()
+BEGIN
+    UPDATE orders
+    JOIN customers ON orders.customer_id = customers.customer_id
+    SET bonus = 
+        CASE 
+            WHEN customers.status = 'Gold' THEN 'Voucher Diskon 20%'
+            WHEN customers.status = 'Silver' THEN 'Voucher Gratis Minuman'
+            ELSE 'Tidak mendapat apapun'
+        END;
+END$$
+
+DELIMITER ;
+
+ALTER TABLE orders ADD COLUMN bonus VARCHAR(80);
+
+CALL Bonus();
+SELECT * FROM orders;
+
+
