@@ -1,0 +1,23 @@
+def pecahan_uang(nominal):
+    pecahan = [10000, 5000, 2000, 1000, 500, 100]
+    nama_pecahan = ["sepuluh ribuan", "lima ribuan", "dua ribuan", "seribuan", "limaratusan", "seratusan"]
+    
+    for i in range(len(pecahan)):
+        jumlah = nominal // pecahan[i]
+        nominal %= pecahan[i]
+        print(f"{jumlah} {nama_pecahan[i]}")
+
+def belanja(harga_barang, jumlah_barang, diskon):
+    total = harga_barang * jumlah_barang
+    total -= total * (diskon / 100)
+    pecahan_uang(int(total))
+        
+# Contoh penggunaan
+pecahan_uang(11600)
+pecahan_uang(7200)
+
+
+
+
+------
+
