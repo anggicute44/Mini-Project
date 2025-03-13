@@ -1,0 +1,9 @@
+def segitiga_sama_kaki(kata):
+    panjang = len(kata)
+    for i in range(1, panjang + 1):
+        spasi = " " * (panjang - i)
+        huruf = kata[:i]
+        print(spasi + huruf)
+
+kata = "PYTHON"
+segitiga_sama_kaki(kata)
