@@ -1,0 +1,24 @@
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.exe.config
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.exe
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.pdb
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.xml
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.AssemblyReference.cache
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS_Progdesk.Form1.resources
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS_Progdesk.Resources.resources
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.GenerateResource.cache
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.CoreCompileInputs.cache
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.exe
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.xml
+D:\Semester 6\Pemrograman Dekstop\UTS\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.pdb
+D:\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.exe.config
+D:\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.exe
+D:\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.pdb
+D:\UTS_progdesk\UTS Progdesk\bin\Debug\UTS Progdesk.xml
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.AssemblyReference.cache
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS_Progdesk.Form1.resources
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS_Progdesk.Resources.resources
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.GenerateResource.cache
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.vbproj.CoreCompileInputs.cache
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.exe
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.xml
+D:\UTS_progdesk\UTS Progdesk\obj\Debug\UTS Progdesk.pdb
